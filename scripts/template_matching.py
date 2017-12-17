@@ -11,6 +11,7 @@ img_rgb = imutils.resize(img_rgb, width=640)
 img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 ret, img_thresh = cv2.threshold(img_gray, 0, 255, THR_FILTER)
 cv2.imshow('Binarized image', img_thresh)
+font = cv2.FONT_HERSHEY_SIMPLEX
 
 for i in range(1, 6):
     # Preprocess template:
@@ -26,7 +27,10 @@ for i in range(1, 6):
     threshold = 0.7
     loc = np.where(res >= threshold)
     for pt in zip(*loc[::-1]):
-        cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
+        cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 1)
+        cv2.putText(img_rgb, 'Obj {}'.format(i), (pt[0] + w//6, pt[1] + 15),
+                    font, 0.5, (255, 0, 0), 1, cv2.LINE_AA)
+        break
 
 # cv2.imwrite('../imgs/res.png', img_rgb)
 cv2.imshow('Result', img_rgb)
